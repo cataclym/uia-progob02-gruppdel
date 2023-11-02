@@ -1,7 +1,7 @@
 include image
 include tables
-  
-tabell = table: A :: Number, B :: Number, C :: Number
+
+var tabell = table: A :: Number, B :: Number, C :: Number
   row: 0, 1, 0
   row: 0, 0, 2
   row: 3, 0, 0
@@ -63,8 +63,23 @@ fun draw-towers():
   A
 end
 
+fun remove-ring(tower):
+
+  block:
+    number = string-to-number(tabell.get-column(tower).find(lam(number): number > 0 end))
+    tabell := tabell.transform-column(tower, lam(numb): 
+        if (numb == number):
+          0
+        else: 
+          num-round(numb)
+        end
+      end)
+    number
+  end
+end
+
 #|
-fun move(from-tower, to-tower):
+   fun move(from-tower, to-tower):
   # Check if the move is valid
   if is-valid-move(from-tower, to-tower):
     # Perform the move
@@ -74,8 +89,7 @@ fun move(from-tower, to-tower):
     draw-towers()
   end
 end
-#|
-
+|#
 #|
 fun play()
   
