@@ -2,7 +2,7 @@ include image
 include tables
 
 var tabell = table: A :: Number, B :: Number, C :: Number
-  row: 0, 1, 0
+  row: 1, 0, 0
   row: 2, 0, 0
   row: 3, 0, 0
   row: 4, 0, 0
@@ -53,7 +53,7 @@ fun draw-towers():
   end
 end
 
-fun remove-ring(tower):
+fun remove-ring(tower :: String):
   number = tabell.get-column(tower)
     .filter(lam(number): number > 0 end).get(0)
 
@@ -69,7 +69,7 @@ fun remove-ring(tower):
   end
 end
 
-fun add-ring(tower, ring):
+fun add-ring(tower :: String, ring :: Number):
   block:
     column = tabell
       .get-column(tower)
@@ -93,17 +93,20 @@ end
   end
    end
 |#
-draw-towers()
 
+
+fun play():
+  draw-towers()
+end
+
+fun move(tower :: String, to-tower :: String):
+  block:
+    ring = remove-ring(tower)
+    add-ring(to-tower, ring)
+    draw-towers()
+  end
+end
 #|
-   fun play()
-
-   end
-
-   fun move()
-
-   end
-
    fun back()
 
    end
