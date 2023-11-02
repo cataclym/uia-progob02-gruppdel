@@ -3,7 +3,7 @@ include tables
 
 var tabell = table: A :: Number, B :: Number, C :: Number
   row: 0, 1, 0
-  row: 0, 0, 2
+  row: 2, 0, 0
   row: 3, 0, 0
   row: 4, 0, 0
 end
@@ -19,62 +19,65 @@ ring-rad = [raw-row: {1; ring-s}, {2; ring-m}, {3; ring-l}, {4; ring-xl}, ]
 
 fun draw-towers():
 
-  scene = put-image(pinne, 100, 100, put-image(pinne, 500, 100, put-image(pinne, 300, 100, empty-scene(600, 200))))
+  var scene = put-image(pinne, 100, 100, put-image(pinne, 500, 100, put-image(pinne, 300, 100, empty-scene(600, 200))))
 
-  var A = scene
-  
-  tab = tabell
-    .get-column("A")
-    .reverse()
-    .each(lam(nummer): 
-      if nummer == 0:
-        A := A
-      else:
-        A := put-image(ring-rad.get-value(num-to-string(nummer)), 100, 100, A)
+  fun draw-tower(tower :: String):
+
+    var horizontal-location = 100
+
+    block:
+      if (tower == "A"):
+        horizontal-location := 100
+      else if (tower == "B"):
+        horizontal-location := 300
+      else if (tower == "C"):
+        horizontal-location := 500
       end
+
+      tabell
+        .get-column(tower)
+        .reverse()
+        .each(lam(nummer): 
+          if nummer == 0:
+            scene := scene
+          else:
+            scene := put-image(pinne, horizontal-location, 100, put-image(ring-rad.get-value(num-to-string(nummer)), horizontal-location, 100, scene))
+          end
+        end)
     end
-    )
-  
-  
-  tab2 = tabell
-    .get-column("B")
-    .reverse()
-    .each(lam(nummer): 
-      if nummer == 0:
-        A := A
-      else:
-        A := put-image(ring-rad.get-value(num-to-string(nummer)), 300, 100, A)
-      end
-    end
-    )
-  
-  tab3 = tabell
-    .get-column("C")
-    .reverse()
-    .each(lam(nummer): 
-      if nummer == 0:
-        A := A
-      else:
-        A := put-image(ring-rad.get-value(num-to-string(nummer)), 500, 100, A)
-      end
-    end
-    )
-  
-  A
+  end
+
+  block:
+    tabell.column-names().each(lam(tower): draw-tower(tower) end)
+    scene
+  end
 end
 
 fun remove-ring(tower):
+  number = tabell.get-column(tower)
+    .filter(lam(number): number > 0 end).get(0)
 
   block:
-    number = string-to-number(tabell.get-column(tower).find(lam(number): number > 0 end))
     tabell := tabell.transform-column(tower, lam(numb): 
         if (numb == number):
           0
         else: 
-          num-round(numb)
+          numb
         end
       end)
     number
+  end
+end
+
+fun add-ring(tower, ring):
+  block:
+    column = tabell
+      .get-column(tower)
+      .set(ring - 1, ring)
+
+    removed-old-tower = tabell.drop(tower)
+
+    tabell := removed-old-tower.add-column(tower, column)
   end
 end
 
@@ -88,26 +91,28 @@ end
     # Redraw the towers
     draw-towers()
   end
-end
+   end
 |#
+draw-towers()
+
 #|
-fun play()
-  
-end
+   fun play()
 
-fun move()
-  
-end
+   end
 
-fun back()
-  
-end
+   fun move()
 
-fun restart()
-  
-end
+   end
 
-fun quit()
-  
-end
+   fun back()
+
+   end
+
+   fun restart()
+
+   end
+
+   fun quit()
+
+   end
 |#
