@@ -85,14 +85,34 @@ fun add-ring(tower :: String, ring :: Number):
     removed-old-tower = tabell.drop(tower)
 
     tabell := removed-old-tower.add-column(tower, column)
+<<<<<<< HEAD
   end
 end
+=======
+  end
+end
+
+#|
+   fun move(from-tower, to-tower):
+  # Check if the move is valid
+  if is-valid-move(from-tower, to-tower):
+    # Perform the move
+    ring = remove-ring(from-tower)
+    add-ring(to-tower, ring)
+    # Redraw the towers
+    draw-towers()
+  end
+   end
+|#
+
+>>>>>>> 97a87546f71d098429a052a3340506bac677beac
 
 fun play():
   draw-towers()
 end
 
 fun move(tower :: String, to-tower :: String):
+<<<<<<< HEAD
   if is-valid-move(tower, to-tower):
     block:
       ring = remove-ring(tower)
@@ -129,6 +149,14 @@ fun get-ring(tower :: String):
   end
 end
 
+=======
+  block:
+    ring = remove-ring(tower)
+    add-ring(to-tower, ring)
+    draw-towers()
+  end
+end
+>>>>>>> 97a87546f71d098429a052a3340506bac677beac
 #|
    fun back()
 
