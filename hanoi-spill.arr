@@ -15,6 +15,8 @@ winning-tabell = table: A :: Number, B :: Number, C :: Number
   row: 0, 0, 4
 end
 
+var previous-tabell = table: A :: Number, B :: Number, C :: Number end
+
 pinne = circle(15, "solid", "black")
 ring-xl = circle(100, "solid", "yellow")
 ring-l = circle(80, "solid", "blue")
@@ -60,7 +62,7 @@ fun draw-towers():
   end
 end
 
-fun remove-ring(tower :: String):
+fun remove-ring(tower :: String) -> Number:
   number = tabell.get-column(tower)
     .filter(lam(number): number > 0 end).get(0)
 
@@ -85,36 +87,17 @@ fun add-ring(tower :: String, ring :: Number):
     removed-old-tower = tabell.drop(tower)
 
     tabell := removed-old-tower.add-column(tower, column)
-<<<<<<< HEAD
   end
 end
-=======
-  end
-end
-
-#|
-   fun move(from-tower, to-tower):
-  # Check if the move is valid
-  if is-valid-move(from-tower, to-tower):
-    # Perform the move
-    ring = remove-ring(from-tower)
-    add-ring(to-tower, ring)
-    # Redraw the towers
-    draw-towers()
-  end
-   end
-|#
-
->>>>>>> 97a87546f71d098429a052a3340506bac677beac
 
 fun play():
   draw-towers()
 end
 
 fun move(tower :: String, to-tower :: String):
-<<<<<<< HEAD
   if is-valid-move(tower, to-tower):
     block:
+      previous-tabell := tabell
       ring = remove-ring(tower)
       add-ring(to-tower, ring)
       if (tabell == winning-tabell):
@@ -131,14 +114,14 @@ fun move(tower :: String, to-tower :: String):
   end
 end
 
-fun is-valid-move(from-tower :: String, to-tower :: String):
+fun is-valid-move(from-tower :: String, to-tower :: String) -> Boolean:
   number-from-tower = get-ring(from-tower)
   number-to-tower = get-ring(to-tower)
   
   (number-from-tower < number-to-tower) or (number-to-tower == 0)
 end
 
-fun get-ring(tower :: String):
+fun get-ring(tower :: String) -> Number:
   number-list = tabell.get-column(tower)
     .filter(lam(number): number > 0 end)
 
@@ -149,24 +132,9 @@ fun get-ring(tower :: String):
   end
 end
 
-=======
+fun back():
   block:
-    ring = remove-ring(tower)
-    add-ring(to-tower, ring)
+    tabell := previous-tabell
     draw-towers()
   end
 end
->>>>>>> 97a87546f71d098429a052a3340506bac677beac
-#|
-   fun back()
-
-   end
-
-   fun restart()
-
-   end
-
-   fun quit()
-
-   end
-|#
