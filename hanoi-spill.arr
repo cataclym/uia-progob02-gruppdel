@@ -25,10 +25,13 @@ ring-s = circle(40, "solid", "red")
 
 ring-rad = [raw-row: {1; ring-s}, {2; ring-m}, {3; ring-l}, {4; ring-xl}, ]
 
+fun create-scene():
+  put-image(pinne, 100, 100, put-image(pinne, 500, 100, put-image(pinne, 300, 100, empty-scene(600, 200))))
+end
 
 fun draw-towers():
 
-  var scene = put-image(pinne, 100, 100, put-image(pinne, 500, 100, put-image(pinne, 300, 100, empty-scene(600, 200))))
+  var scene = create-scene()
 
   fun draw-tower(tower :: String):
 
@@ -94,7 +97,11 @@ fun play():
   draw-towers()
 end
 
-fun move(tower :: String, to-tower :: String):
+fun move(tower-input :: String, to-tower-input :: String):
+
+  tower = string-to-upper(tower-input)
+  to-tower = string-to-upper(to-tower-input)
+
   if is-valid-move(tower, to-tower):
     block:
       previous-tabell := tabell
@@ -110,14 +117,17 @@ fun move(tower :: String, to-tower :: String):
       end
     end
   else:
-    print("Det trekket er ikke gyldig. ❌")
+    block:
+      print("Det trekket er ikke gyldig. ❌")
+      draw-letters()
+    end
   end
 end
 
 fun is-valid-move(from-tower :: String, to-tower :: String) -> Boolean:
   number-from-tower = get-ring(from-tower)
   number-to-tower = get-ring(to-tower)
-  
+
   (number-from-tower < number-to-tower) or (number-to-tower == 0)
 end
 
@@ -138,3 +148,17 @@ fun back():
     draw-towers()
   end
 end
+
+fun draw-letters():
+  scene = create-scene()
+  put-image(text("C", 80, "black"), 500, 40, put-image(text("B", 80, "black"), 300, 40, put-image(text("A", 80, "black"), 100, 40, scene)))
+end
+
+block:  
+  print("Velkommen til Hanoi-spillet til grubbe 5b!")
+  print("For å spille kan du bruke move('A', 'B'), hvor 'A' og 'B' er tårn, og det siste tårnet er 'C'.")
+  print("Start spillet ved å skrive play() 🎮😄")
+  print("Du kan også angre ett trekk ved å skrive back().")
+  draw-letters()
+end
+draw-towers()
